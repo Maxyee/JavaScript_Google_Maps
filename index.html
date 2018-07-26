@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Javascript Google Map</title>
+    <style>
+        #map{
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Javascript Google Map</h1>
+    <div id="map">
+
+    </div>
+    <script>
+        function initMap(){
+            
+            //Map options
+            var options = {
+                zoom:13,
+                center:{lat:23.8103, lng:90.4125}
+            }
+            
+            //new Map
+            var map = new google.maps.Map(document.getElementById('map'),options);
+            
+            //Adding Listen for click on map
+            google.maps.event.addListener(map, 'click', 
+            function(event){
+                //Add marker
+                addMarker({coords:event.latLng})
+            })
+
+
+
+            //this is static way of add place in google map and give marker for that place
+            /*
+            //Adding Icon in Map
+            var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
+            //Add marker
+            var marker = new google.maps.Marker({
+                position: {lat:23.7718 , lng:90.3631},
+                map:map,
+                icon:image
+            });
+
+            // Adding information for that specific place..
+            var infoWindow = new google.maps.InfoWindow({
+                content:'<h1>Shamoly</h1>'
+            });
+
+            marker.addListener('click', function(){
+                infoWindow.open(map, marker);
+            });
+            */
+
+
+            //this is dynamic way for add place in google map and give marker for that place
+
+            //creating a Array of Markers
+            var markers = 
+            [
+                {
+                    coords:{lat:23.7718 , lng:90.3631},
+                    iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                    content:'<h1>Shamoly</h1>'
+                },
+
+                {
+                coords:{lat:23.7925 , lng:90.4078},
+                content:'<h1>Gulshan</h1>'
+                },
+                
+                {
+                coords:{lat:23.7805 , lng:90.4267},
+                iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+                }
+
+            ];
+
+            //Now looping all the array value to the marker function
+            for( var i = 0; i<markers.length;i++)
+            {
+                //adding marker using loop
+                addMarker
+                (markers[i]);
+            }
+
+            //calling add marker function
+
+            // addMarker({
+            //     coords:{lat:23.7718 , lng:90.3631},
+            //     iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            //     content:'<h1>Shamoly</h1>'
+            // });
+            // addMarker({
+            //     coords:{lat:23.7925 , lng:90.4078},
+            //     content:'<h1>Gulshan</h1>'
+            // });
+            // addMarker({
+            //     coords:{lat:23.7805 , lng:90.4267},
+            //     iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+            // });
+
+            //Add marker
+            function addMarker(props){
+                var marker = new google.maps.Marker({
+                    position: props.coords,
+                    map:map,
+                    icon:props.iconImage
+                });
+            
+                //checking is there any icon image for that addmarker propertise
+                if(props.iconImage){
+                    marker.setIcon(props.iconImage);
+                }
+
+                //checking is there any info for add marker propertise
+                if(props.content){
+                    var infoWindow = new google.maps.InfoWindow({
+                        content:props.content
+                    });
+
+                    marker.addListener('click', function(){
+                        infoWindow.open(map, marker);
+                    });
+                }
+            }
+    }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpdHM1otOhDIdCVjITYeN-ILppUk0jZ-o&callback=initMap">
+    </script>
+</body>
+</html>
